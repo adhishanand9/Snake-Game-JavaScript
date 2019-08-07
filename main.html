@@ -51,6 +51,7 @@
   let foodY;
   let dx=10;
   let dy=0;
+	let speed=100;
   let snake = [
       {x: 300, y: 300},
       {x: 290, y: 300},
@@ -61,7 +62,7 @@
   startGame();
   createFood();
 
-  document.addEventListener("keyup",changeDirection );
+  document.addEventListener("keydown",changeDirection );
 
   function startGame(){
     if(gameEnd()){
@@ -75,7 +76,7 @@
         checkBoundary();
         drawSnake();
         startGame();
-      }, 100)
+      }, speed)
   }
 
   function clearCanvas() {
@@ -92,6 +93,7 @@
       const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
       if (didEatFood) {
         score += 10;
+				speed-=2;
         document.getElementById('gameScore').innerHTML = score;
         createFood();
       } else {
@@ -101,6 +103,15 @@
   function checkBoundary(){
     if(snake[0].x>gameCanvas.width){
       snake[0].x=0;
+    }
+		if(snake[0].y>gameCanvas.height){
+      snake[0].y=0;
+    }
+		if(snake[0].x<0){
+      snake[0].x=gameCanvas.width;
+    }
+		if(snake[0].y<0){
+      snake[0].y=gameCanvas.height;
     }
   }
     function gameEnd() {
@@ -128,8 +139,11 @@
     }
     function drawSnakePart(snakePart) {
       ctx.fillStyle = "white";
+			//ctx.strokeStyle="blue";
       ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
-    }
+			//ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+		}
+
     function changeDirection(event) {
       const LEFT_KEY = 37;
       const RIGHT_KEY = 39;
